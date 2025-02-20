@@ -47,4 +47,19 @@ public class BoardPrinter {
 
         System.out.println("┗" + "━┻".repeat(size - 1) + "━┛");
     }
+
+
+    public void printResult(int gameValue) {
+        switch (gameValue) {
+            case 0:
+                System.out.println("Tie");
+                break;
+            case 10:
+                System.out.println(PLAYER_1 + " won");
+                break;
+            case -10:
+                System.out.println(PLAYER_2 + " won");
+                break;
+        }
+    }
 }

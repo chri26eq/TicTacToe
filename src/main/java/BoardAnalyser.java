@@ -18,7 +18,7 @@ public class BoardAnalyser {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (isFieldEmpty(board[i][j])) {
+                if (isTileEmpty(board[i][j])) {
                     board[i][j] = player;
                     boolean nextIsMaximizer = (player.equals(PLAYER_MAX)) ? false : true;
                     // Start med allowedDepth som den maksimale dybde
@@ -70,7 +70,7 @@ public class BoardAnalyser {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
 
-                    if (isFieldEmpty(board[i][j])) {
+                    if (isTileEmpty(board[i][j])) {
 
                         // Laver et move for at analysere det
                         board[i][j] = PLAYER_MAX;
@@ -91,7 +91,7 @@ public class BoardAnalyser {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
 
-                    if (isFieldEmpty(board[i][j])) {
+                    if (isTileEmpty(board[i][j])) {
 
                         // Laver et move for at analysere det
                         board[i][j] = PLAYER_MIN;
@@ -118,8 +118,8 @@ public class BoardAnalyser {
     }
 
 
-    private boolean isFieldEmpty(String field) {
-        return field.equals(" ");
+    public boolean isTileEmpty(String tile) {
+        return tile.equals(" ");
     }
 
 
@@ -169,7 +169,7 @@ public class BoardAnalyser {
 
     int staticBoardEvaluation(String[][] board) {
         int bestValue = 0;
-        int[][] fieldStaticValues =
+        int[][] tileStaticValues =
                 {
                         {3, 2, 3},
                         {2, 4, 2},
@@ -179,8 +179,8 @@ public class BoardAnalyser {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (isFieldEmpty(board[i][j])) {
-                    bestValue = Math.max(bestValue, fieldStaticValues[i][j]);
+                if (isTileEmpty(board[i][j])) {
+                    bestValue = Math.max(bestValue, tileStaticValues[i][j]);
                 }
                 ;
 
