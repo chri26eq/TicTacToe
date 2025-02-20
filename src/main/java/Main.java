@@ -53,7 +53,7 @@ public class Main {
 
             Thread.sleep(2000);
 
-            List<Integer> moveO = boardAnalyser.findBestMove(emptyBoard, PLAYER_O, 4);
+            List<Integer> moveO = boardAnalyser.findBestMove(emptyBoard, PLAYER_O, 1);
             emptyBoard[moveO.get(0)][moveO.get(1)] = PLAYER_O;
 
         }

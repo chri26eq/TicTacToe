@@ -13,26 +13,16 @@ public class BoardAnalyser {
 
 
     public List<Integer> findBestMove(String[][] board, String player, int allowedDepth) {
-        // En vindende værdi reduces med "depth"s værdi.
-        // Derfor, jo højere "allowedDepth", jo lavere "startingDepth"
-
-        int startingDepth = 10 - allowedDepth;
-
-        //hvis player er X then best value = -Inf ellers +Inf
         int bestMoveValue = (player.equals(PLAYER_MAX)) ? -INFINITY : INFINITY;
-
         List<Integer> bestMove = new ArrayList<>(List.of(-1, -1)); // row, col
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-
                 if (isFieldEmpty(board[i][j])) {
                     board[i][j] = player;
-
-                    boolean nextIsMaximizer = (player.equals(PLAYER_MAX)) ? false : true; // hvis player er X skal næste tjek være minimizer
-
-                    int moveValue = minimax(board, startingDepth, nextIsMaximizer);
-
+                    boolean nextIsMaximizer = (player.equals(PLAYER_MAX)) ? false : true;
+                    // Start med allowedDepth som den maksimale dybde
+                    int moveValue = minimax(board, allowedDepth, nextIsMaximizer);
                     board[i][j] = " ";
 
                     if (player.equals(PLAYER_MAX)) {
@@ -49,33 +39,26 @@ public class BoardAnalyser {
                             bestMoveValue = moveValue;
                         }
                     }
-
                 }
             }
         }
-//        System.out.println("Best move for " + player + " is " + bestMove);
-
         return bestMove;
     }
 
 
     public int minimax(String[][] board, int depth, boolean isMaximizer) {
 
-
-
-
         int value = checkBoardForWinners(board);
-
-//        if (value == 10 || value == -10) return value;
 
         // Hvis analyserede state er et vindende state for X eller Y returner værdien
         // kompenseret dybden.
-        if (value == 10) return value - depth;
-        if (value == -10) return value + depth;
+        // Altså jo dybere man er, jo dårligere er trækket
+        // På den måde prioriteres tættere vindende træk højere end dybere vindende træk.
+        if (value == 10) return value + depth;
+        if (value == -10) return value - depth;
 
-        // hvis alle felter er brugt og ingen vinder er fundet returner 0
-        if (isBoardFull(board)) return 0;
-
+        // Hvis brættet er fyldt eller maksdbde er nået, returner 0
+        if (isBoardFull(board) || depth == 0) return 0;
 
         int bestMove;
 
@@ -91,8 +74,7 @@ public class BoardAnalyser {
 
                         // Laver et move for at analysere det
                         board[i][j] = PLAYER_MAX;
-
-                        int move = minimax(board, depth + 1, false);
+                        int move = minimax(board, depth - 1, false); // Går et lag dybere "depth - 1"
                         bestMove = Math.max(bestMove, move);
 
                         // Fjerner move. Ellers ville der "placeres brikker" for alle analyserede moves
@@ -100,12 +82,12 @@ public class BoardAnalyser {
                     }
                 }
             }
-            return bestMove;
         }
 
         // Minimizers tur -----------------------------------------------
         else {
             bestMove = INFINITY;
+
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
 
@@ -113,8 +95,7 @@ public class BoardAnalyser {
 
                         // Laver et move for at analysere det
                         board[i][j] = PLAYER_MIN;
-
-                        int move = minimax(board, depth + 1, true);
+                        int move = minimax(board, depth - 1, true); // Går et lag dybere "depth - 1"
                         bestMove = Math.min(bestMove, move);
 
                         // Fjerner move. Ellers ville der "placeres brikker" for alle analyserede moves
@@ -122,8 +103,9 @@ public class BoardAnalyser {
                     }
                 }
             }
-            return bestMove;
         }
+        // returner min eller max bestMove værdi
+        return bestMove;
     }
 
 
