@@ -182,7 +182,7 @@ public class BoardAnalyser {
                 if (isTileEmpty(board[i][j])) {
                     bestValue = Math.max(bestValue, tileStaticValues[i][j]);
                 }
-                ;
+
 
             }
         }

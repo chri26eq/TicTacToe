@@ -15,8 +15,6 @@ public class UserInput {
     public void choose() {
         int i = -1;
         int j = -1;
-        boolean inputIsValid = true;
-        boolean tileIsEmpty = false;
 
 
         while (true) {
